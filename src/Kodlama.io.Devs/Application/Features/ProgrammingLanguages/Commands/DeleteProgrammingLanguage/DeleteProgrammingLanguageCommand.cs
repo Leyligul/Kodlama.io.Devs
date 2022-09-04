@@ -34,9 +34,8 @@ namespace Application.Features.ProgrammingLanguages.Commands.DeleteProgrammingLa
             {
                 ProgrammingLanguage? language = await _programmingLanguageRepository.GetAsync(b => b.Id == request.Id);
                 _programmingLanguageBusinessRules.ProgrammingLanguageShouldExistWhenRequested(language);
-
-                ProgrammingLanguage mappedLanguage = _mapper.Map<ProgrammingLanguage>(language);
-                ProgrammingLanguage deletedLanguage = await _programmingLanguageRepository.DeleteAsync(mappedLanguage);
+              
+                ProgrammingLanguage deletedLanguage = await _programmingLanguageRepository.DeleteAsync(language);
                 DeletedProgrammingLanguageDto deletedLanaguageDto = _mapper.Map<DeletedProgrammingLanguageDto>(language);
                
                 return deletedLanaguageDto;

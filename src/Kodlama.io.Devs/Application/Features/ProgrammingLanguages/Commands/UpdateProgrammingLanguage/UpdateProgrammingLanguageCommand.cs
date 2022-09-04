@@ -2,6 +2,7 @@
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Security.Entities;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -33,10 +34,14 @@ namespace Application.Features.ProgrammingLanguages.Commands.UpdateProgrammingLa
 
             public async Task<UpdatedProgrammingLanguageDto> Handle(UpdateProgrammingLanguageCommand request, CancellationToken cancellationToken)
             {
+                ProgrammingLanguage? existLanguage = await _programmingLanguageRepository.GetAsync(l => l.Id == request.Id);
+                _programmingLanguageBusinessRules.ProgrammingLanguageShouldExistWhenRequested(existLanguage);
+
                 await _programmingLanguageBusinessRules.ProgrammingLanguageNameCanNotBeDuplicatedWhenInserted(request.Name);
 
-                ProgrammingLanguage mappedLanguage = _mapper.Map<ProgrammingLanguage>(request);
-                ProgrammingLanguage updatedLanguage = await _programmingLanguageRepository.UpdateAsync(mappedLanguage);
+                _mapper.Map<UpdateProgrammingLanguageCommand, ProgrammingLanguage>(request, existLanguage);
+                // ProgrammingLanguage mappedLanguage = _mapper.Map<ProgrammingLanguage>(request);
+                ProgrammingLanguage updatedLanguage = await _programmingLanguageRepository.UpdateAsync(existLanguage);
                 UpdatedProgrammingLanguageDto updatedLanaguageDto = _mapper.Map<UpdatedProgrammingLanguageDto>(updatedLanguage);
              
 

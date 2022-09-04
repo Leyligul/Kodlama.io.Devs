@@ -26,10 +26,12 @@ namespace WebAPI.Controllers
         [HttpPut("update/{Id}")]
         public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] string name)
         {
-            UpdateProgrammingLanguageCommand updateProgrammingLanguageCommand = new() { Id = Id , Name = name};
+            UpdateProgrammingLanguageCommand updateProgrammingLanguageCommand = new() { Id = Id, Name = name };
             UpdatedProgrammingLanguageDto result = await Mediator.Send(updateProgrammingLanguageCommand);
             return Ok(result);
         }
+
+     
 
         //[HttpPut("update")]
         //public async Task<IActionResult> Update([FromBody] UpdateProgrammingLanguageCommand updateProgrammingLanguageCommand )
@@ -55,9 +57,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete("delete/{Id}")]
-        public async Task<IActionResult> Delete([FromRoute] DeleteProgrammingLanguageCommand request)
+        public async Task<IActionResult> Delete([FromRoute] int Id)
         {
-            DeletedProgrammingLanguageDto result = await Mediator.Send(request);
+            DeleteProgrammingLanguageCommand deleteProgrammingLanguageCommand = new() { Id = Id };
+            DeletedProgrammingLanguageDto result = await Mediator.Send(deleteProgrammingLanguageCommand);
 
             return Ok(result);
         }
