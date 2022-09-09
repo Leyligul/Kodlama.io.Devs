@@ -1,6 +1,7 @@
 ﻿using Application.Features.ProgrammingLanguages.Dtos;
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Dtos;
+using Application.Features.ProgrammingLanguageTechnologies.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
@@ -22,16 +23,18 @@ namespace Application.Features.ProgrammingLanguageTechnologies.Commands.CreateTe
         {
             private readonly ITechnologyRepository _technologyRepository;
             private readonly IMapper _mapper;
+            private readonly ProgrammingLanguageTechnologysRules _programmingLanguageTechnologyBusinessRules;
 
-            public CreateTechnologyCommandHandler(ITechnologyRepository technologyRepository, IMapper mapper)
+            public CreateTechnologyCommandHandler(ITechnologyRepository technologyRepository, IMapper mapper, ProgrammingLanguageTechnologysRules programmingLanguageTechnologyBusinessRules)
             {
                 _technologyRepository = technologyRepository;
                 _mapper = mapper;
+                _programmingLanguageTechnologyBusinessRules = programmingLanguageTechnologyBusinessRules;
             }
 
             public async Task<CreatedTechnologyDto> Handle(CreateTechnologyCommand request, CancellationToken cancellationToken)
             {
-
+                await _programmingLanguageTechnologyBusinessRules.CanNotBeDuplicatedWhenInserted(request.Name);
                 ProgrammingLanguageTechnology mappedTechnology = _mapper.Map<ProgrammingLanguageTechnology>(request);
                 ProgrammingLanguageTechnology createdTechnology = await _technologyRepository.AddAsync(mappedTechnology);
                

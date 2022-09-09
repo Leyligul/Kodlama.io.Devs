@@ -2,6 +2,7 @@
 using Application.Features.ProgrammingLanguages.Dtos;
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Dtos;
+using Application.Features.ProgrammingLanguageTechnologies.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
@@ -24,16 +25,21 @@ namespace Application.Features.ProgrammingLanguageTechnologies.Commands.UpdateTe
         {
             private readonly ITechnologyRepository _technologyRepository;
             private readonly IMapper _mapper;
+            private readonly ProgrammingLanguageTechnologysRules _programmingLanguageTechnologyBusinessRules;
 
-            public UpdateProgrammingLanguageCommandHandler(ITechnologyRepository technologyRepository, IMapper mapper)
+            public UpdateProgrammingLanguageCommandHandler(ITechnologyRepository technologyRepository, IMapper mapper, ProgrammingLanguageTechnologysRules programmingLanguageTechnologyBusinessRules)
             {
                 _technologyRepository = technologyRepository;
                 _mapper = mapper;
+                _programmingLanguageTechnologyBusinessRules = programmingLanguageTechnologyBusinessRules;
             }
 
             public async Task<UpdatedTechnologyDto> Handle(UpdateTechnologyCommand request, CancellationToken cancellationToken)
             {
                 var existsTechnology = await _technologyRepository.GetAsync(d => d.Id == request.Id);
+                _programmingLanguageTechnologyBusinessRules.ProgrammingLanguageTechnologyShouldExistWhenRequested(existsTechnology);
+
+                await _programmingLanguageTechnologyBusinessRules.CanNotBeDuplicatedWhenInserted(request.Name);
 
                 _mapper.Map<UpdateTechnologyCommand, ProgrammingLanguageTechnology>(request, existsTechnology);
              

@@ -33,15 +33,6 @@ namespace Application.Features.ProgrammingLanguages.Rules
            if (programmingLanguage == null) throw new BusinessException("Requested programmingLanguage does not exist.");
        }
 
-        public async Task IsOkToBeUpdated(int Id, string name)
-        {
-            ProgrammingLanguage language = await _programmingLanguage.GetAsync(l => l.Id == Id);
-
-            if (language == null) throw new BusinessException("Requested programmingLanguage does not exist.");
-
-            IPaginate<ProgrammingLanguage> result = await _programmingLanguage.GetListAsync(b => b.Name == name);
-            if (result.Items.Any()) throw new BusinessException("Name already exists.");
-
-        }
+   
     }
 }
