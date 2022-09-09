@@ -14,6 +14,7 @@ namespace Persistence.Context
     {
         protected IConfiguration Configuration { get; set; }
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
+        public DbSet<ProgrammingLanguageTechnology> ProgrammingLanguageTechnologies { get; set; }
 
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
@@ -35,6 +36,16 @@ namespace Persistence.Context
                 a.ToTable("ProgrammingLanguages").HasKey(k => k.Id);
                 a.Property(p => p.Id).HasColumnName("Id");
                 a.Property(p => p.Name).HasColumnName("Name");
+                a.HasMany(p => p.ProgrammingLanguageTechnologies);
+            });
+
+            modelBuilder.Entity<ProgrammingLanguageTechnology>(a =>
+            {
+                a.ToTable("ProgrammingLanguageTechnologies").HasKey(k => k.Id);
+                a.Property(p => p.Id).HasColumnName("Id");
+                a.Property(p => p.Name).HasColumnName("Name");
+                a.Property(p => p.ProgrammingLanguageId).HasColumnName("ProgrammingLanguageId");
+                a.HasOne(p => p.Language);
             });
 
 
