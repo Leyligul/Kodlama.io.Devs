@@ -1,5 +1,6 @@
 using Application;
 using Core.CrossCuttingConcerns.Exceptions;
+using Core.Security.JWT;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
 
 var app = builder.Build();
 

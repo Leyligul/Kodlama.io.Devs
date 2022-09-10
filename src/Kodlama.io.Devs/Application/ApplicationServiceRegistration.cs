@@ -1,7 +1,10 @@
 ﻿using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Rules;
+using Application.Features.Users.Rules;
+using Application.Services.Repositories;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Validation;
+using Core.Security.JWT;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,16 +25,12 @@ namespace Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<ProgrammingLanguageBusinessRules> ();
+            services.AddScoped<ProgrammingLanguageBusinessRules>();
+            services.AddScoped<UserBusinessRules>();
             services.AddScoped<ProgrammingLanguageTechnologysRules>();
+            services.AddScoped<ITokenHelper, JwtHelper>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheRemovingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-
-  
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             return services;
