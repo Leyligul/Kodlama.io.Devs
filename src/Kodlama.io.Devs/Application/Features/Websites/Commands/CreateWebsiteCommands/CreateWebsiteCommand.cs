@@ -23,6 +23,8 @@ namespace Application.Features.Websites.Commands.CreateWebsiteCommands
 
         public int UserId { get; set; }
 
+        public string Password { get; set; }
+
         public class CreateWebsiteCommandHandler : IRequestHandler<CreateWebsiteCommand, CreatedWebsiteDto>
         {
             private readonly IWebsiteRepository _websiteRepository;
@@ -47,6 +49,10 @@ namespace Application.Features.Websites.Commands.CreateWebsiteCommands
 
                 //Dublicate Url
                 await _rules.UrlCanNotBeDuplicated(request.Url);
+
+                //CheckUserAuthentication
+                //await _userRules.VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt);
+                
                
            
                 Website mappedWebsite = _mapper.Map<Website>(request);
