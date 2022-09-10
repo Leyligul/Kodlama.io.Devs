@@ -12,6 +12,6 @@ namespace Application.Features.ProgrammingLanguages.Models
     {
 
         public IList<ProgrammingLanguageListDto> Items { get; set; }
-        public string result { get; set; }
+        
     }
 }

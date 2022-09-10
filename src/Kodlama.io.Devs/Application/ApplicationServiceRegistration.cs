@@ -1,6 +1,7 @@
 ﻿using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Rules;
 using Application.Features.Users.Rules;
+using Application.Features.Websites.Rules;
 using Application.Services.Repositories;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Validation;
@@ -28,6 +29,7 @@ namespace Application
             services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<UserBusinessRules>();
             services.AddScoped<ProgrammingLanguageTechnologysRules>();
+            services.AddScoped<WebsiteBusinessRules>();
             services.AddScoped<ITokenHelper, JwtHelper>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

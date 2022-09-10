@@ -16,6 +16,7 @@ namespace Persistence.Context
         protected IConfiguration Configuration { get; set; }
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
         public DbSet<ProgrammingLanguageTechnology> ProgrammingLanguageTechnologies { get; set; }
+        public DbSet<Website> Websites { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
@@ -87,6 +88,18 @@ namespace Persistence.Context
 
                 a.HasOne(c => c.OperationClaim);
                 a.HasOne(c => c.User);
+            });
+
+            modelBuilder.Entity<Website>(a =>
+            {
+                a.ToTable("Websites").HasKey(k => k.Id);
+                a.Property(p => p.Id).HasColumnName("Id");
+                a.Property(c => c.Url).HasColumnName("Url");
+
+                a.HasOne(c => c.User);
+
+
+
             });
 
         }
