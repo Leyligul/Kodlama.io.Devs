@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
         {
             AccessToken result = await Mediator.Send(request);
-            return Created("Registered successfully.", result);
+            return Created("Logined successfully.", result);
         }
     }
 }
