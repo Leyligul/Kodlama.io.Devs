@@ -29,12 +29,14 @@ namespace Application.Features.Users.Commands.RegisterCommand
             private readonly IUserRepository _userRepository;
             private readonly IMapper _mapper;
             private readonly UserBusinessRules _rules;
+            private readonly ITokenHelper _tokenHelper;
 
-            public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules rules)
+            public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules rules, ITokenHelper tokenHelper)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
                 _rules = rules;
+                _tokenHelper = tokenHelper;
             }
 
             public async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -51,6 +53,9 @@ namespace Application.Features.Users.Commands.RegisterCommand
                 user.AuthenticatorType = AuthenticatorType.Email;
 
                 await _userRepository.AddAsync(user);
+
+                var userClaims = _userRepository.GetClaims(user);
+                _tokenHelper.CreateToken(user, userClaims);
 
                 UserDto userDto = _mapper.Map<UserDto>(user);
 
