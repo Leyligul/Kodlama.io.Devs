@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.UserOperationClaims.Commands
+namespace Application.Features.UserOperationClaims.Dtos
 {
-    internal class Class2
+    public class UserOperationClaimListDto : BaseDto
     {
     }
 }

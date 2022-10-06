@@ -1,6 +1,7 @@
 ﻿using Application.Features.OperationClaims.Rules;
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Rules;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Features.Users.Rules;
 using Application.Features.Websites.Rules;
 using Application.Services.AuthServıce;
@@ -33,6 +34,7 @@ namespace Application
             services.AddScoped<ProgrammingLanguageTechnologysRules>();
             services.AddScoped<WebsiteBusinessRules>();
             services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
 
 
             services.AddScoped<IAuthService, AuthManager>();

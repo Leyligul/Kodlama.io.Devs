@@ -35,6 +35,12 @@ namespace Application.Features.Users.Rules
             return user;
         }
 
+        public async Task<User> FindUserById(int id)
+        {
+            var user = await _userRepository.GetAsync(u => u.Id == id);
+            return user;
+        }
+
         public async Task VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             if (!HashingHelper.VerifyPasswordHash(password, passwordHash, passwordSalt))
