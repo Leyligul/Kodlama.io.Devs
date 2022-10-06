@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Users.Dtos
 {
-    public class UserDto
+    public class RegisteredUserDto : RefreshedTokenDto
     {
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        
     }
 }

@@ -43,9 +43,7 @@ namespace Application.Features.Websites.Commands.CreateWebsiteCommands
             public async Task<CreatedWebsiteDto> Handle(CreateWebsiteCommand request, CancellationToken cancellationToken)
             {
                 //CheckUser
-                User user = _websiteRepository.GetUser(request.UserId);
-
-                _userRules.CheckIfUserExists(user);
+           
 
                 //Dublicate Url
                 await _rules.UrlCanNotBeDuplicated(request.Url);

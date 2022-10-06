@@ -4,6 +4,7 @@ using Core.Persistence.Paging;
 using Core.Security.Entities;
 using Core.Security.Hashing;
 using Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +28,11 @@ namespace Application.Features.Users.Rules
             if (result.Items.Any()) throw new BusinessException("Email already exists.");
         }
 
-        public void CheckIfUserExists(User user)
+        public async Task<User> FindUser(string email)
         {
-
+            var user = await _userRepository.GetAsync(u => u.Email == email);
             if (user == null) throw new BusinessException("User does not exist.");
+            return user;
         }
 
         public async Task VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)

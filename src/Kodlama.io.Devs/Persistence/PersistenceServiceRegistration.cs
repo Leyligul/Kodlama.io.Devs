@@ -23,6 +23,9 @@ namespace Persistence
             services.AddScoped<IProgrammingLanguageRepository, ProgrammingLanguageRepository>();
             services.AddScoped<ITechnologyRepository, TechnologyRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshtokenRepository>();
+            services.AddScoped<IOperationClaimRepository, OpereationClaimRepository>();
+            services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             services.AddScoped<IWebsiteRepository, WebsiteRepository>();
 
             return services;

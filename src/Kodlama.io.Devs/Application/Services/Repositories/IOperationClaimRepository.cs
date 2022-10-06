@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Repositories
 {
-    public interface IUserRepository : IAsyncRepository<User>, IRepository<User>
+    public interface IOperationClaimRepository : IAsyncRepository<OperationClaim>, IRepository<OperationClaim>
     {
-        //IList<OperationClaim> GetClaims(User user);
     }
 }

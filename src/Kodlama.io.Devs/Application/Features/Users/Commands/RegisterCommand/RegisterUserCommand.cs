@@ -1,5 +1,6 @@
 ﻿using Application.Features.Users.Dtos;
 using Application.Features.Users.Rules;
+using Application.Services.AuthServıce;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Security.Dtos;
@@ -17,49 +18,57 @@ using System.Threading.Tasks;
 namespace Application.Features.Users.Commands.RegisterCommand
 {
 
-    public class RegisterUserCommand : IRequest<UserDto>
+    public class RegisterUserCommand : IRequest<RegisteredUserDto>
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public UserForRegisterDto UserForRegisterDto { get; set; }
+        public string IpAddress { get; set; }
 
-        public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserDto>
+        public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisteredUserDto>
         {
+            private readonly IAuthService _authService;
             private readonly IUserRepository _userRepository;
-            private readonly IMapper _mapper;
+          
             private readonly UserBusinessRules _rules;
-            private readonly ITokenHelper _tokenHelper;
 
-            public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules rules, ITokenHelper tokenHelper)
+            public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper, UserBusinessRules rules, IAuthService authService)
             {
                 _userRepository = userRepository;
-                _mapper = mapper;
+              
                 _rules = rules;
-                _tokenHelper = tokenHelper;
+                _authService = authService;
             }
 
-            public async Task<UserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+            public async Task<RegisteredUserDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
             {
-                await _rules.EmailCanNotBeDuplicated(request.Email);
+                await _rules.EmailCanNotBeDuplicated(request.UserForRegisterDto.Email);
 
                 byte[] passwordHash, passwordSalt;
-                HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+                HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out passwordHash, out passwordSalt);
 
-                User user = _mapper.Map<User>(request);
-                user.Status = true;
-                user.PasswordSalt = passwordSalt;
-                user.PasswordHash = passwordHash;
-                user.AuthenticatorType = AuthenticatorType.Email;
 
-                await _userRepository.AddAsync(user);
+                User newUser = new()
+                {
+                    Email = request.UserForRegisterDto.Email,
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    FirstName = request.UserForRegisterDto.FirstName,
+                    LastName = request.UserForRegisterDto.LastName,
+                    Status = true
+                };
 
-                var userClaims = _userRepository.GetClaims(user);
-                _tokenHelper.CreateToken(user, userClaims);
+                User createdUser = await _userRepository.AddAsync(newUser);
 
-                UserDto userDto = _mapper.Map<UserDto>(user);
+                AccessToken createdAccessToken = await _authService.CreateAccessToken(createdUser);
+                RefreshToken createdRefreshToken = await _authService.CreateRefreshToken(createdUser, request.IpAddress);
+                RefreshToken addedRefreshToken = await _authService.AddRefreshToken(createdRefreshToken);
 
-                return userDto;
+                RegisteredUserDto registeredUserDto = new()
+                {
+                    RefreshToken = addedRefreshToken,
+                    AccessToken = createdAccessToken,
+                
+                };
+                return registeredUserDto;
 
             }
         }

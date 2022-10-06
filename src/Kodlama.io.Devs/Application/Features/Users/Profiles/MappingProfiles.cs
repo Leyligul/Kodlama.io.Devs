@@ -24,7 +24,7 @@ namespace Application.Features.Users.Profiles
         public MappingProfiles()
         {
             //Register
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, RegisteredUserDto>().ReverseMap();
             CreateMap<User, RegisterUserCommand>().ReverseMap();
 
 

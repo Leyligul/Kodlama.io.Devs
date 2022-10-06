@@ -42,8 +42,8 @@ namespace Application.Features.Websites.Commands.UpdateWebsiteCommands
             public async Task<UpdatedWebsiteDto> Handle(UpdateWebsiteCommand request, CancellationToken cancellationToken)
             {
                 //CheckUser
-                User user = _websiteRepository.GetUser(request.UserId);
-                _userRules.CheckIfUserExists(user);
+                //User user = _websiteRepository.GetUser(request.UserId);
+                //_userRules.CheckIfUserExists(user);
 
                 Website? existWebsite = await _websiteRepository.GetAsync(l => l.Id == request.Id);
                 _rules.CheckIfWebsiteExists(existWebsite);
