@@ -1,4 +1,5 @@
-﻿using Application.Features.ProgrammingLanguages.Rules;
+﻿using Application.Features.OperationClaims.Rules;
+using Application.Features.ProgrammingLanguages.Rules;
 using Application.Features.ProgrammingLanguageTechnologies.Rules;
 using Application.Features.Users.Rules;
 using Application.Features.Websites.Rules;
@@ -31,6 +32,9 @@ namespace Application
             services.AddScoped<UserBusinessRules>();
             services.AddScoped<ProgrammingLanguageTechnologysRules>();
             services.AddScoped<WebsiteBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+
+
             services.AddScoped<IAuthService, AuthManager>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
