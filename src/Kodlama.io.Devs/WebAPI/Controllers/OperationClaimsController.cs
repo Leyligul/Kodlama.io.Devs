@@ -8,8 +8,10 @@ using Application.Features.ProgrammingLanguages.Dtos;
 using Application.Features.ProgrammingLanguages.Models;
 using Application.Features.ProgrammingLanguages.Queries.GetListProgrammingLanguage;
 using Core.Application.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace WebAPI.Controllers
 {
@@ -20,6 +22,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("create")]
+        [Authorize] 
         public async Task<IActionResult> Add([FromBody] CreateOperationClaimCommand createOperationClaimCommand)
         {
             CreatedOperationClaimDto result = await Mediator.Send(createOperationClaimCommand);

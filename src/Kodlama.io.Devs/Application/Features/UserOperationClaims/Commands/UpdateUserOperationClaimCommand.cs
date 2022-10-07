@@ -46,11 +46,10 @@ namespace Application.Features.UserOperationClaims.Commands
             {
                 UserOperationClaim? userClaim = await _rules.FindUserOperationClaimById(request.Id);
 
-                await _rules.CheckIfUserHasAlreadyRole(request.UserId, request.Id);
+                await _rules.CheckIfUserHasAlreadyRole(userClaim, request.OperationClaimId);
 
                 User user = await _userRules.FindUserById(request.UserId);
-                OperationClaim claim = await _operationClaimRules.FindOperationClaimById(request.Id);
-
+              
                 userClaim.OperationClaimId = request.OperationClaimId;
                 userClaim.UserId = request.UserId;
   

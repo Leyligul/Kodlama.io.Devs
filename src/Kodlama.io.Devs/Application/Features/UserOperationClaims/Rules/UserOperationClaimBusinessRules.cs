@@ -20,14 +20,7 @@ namespace Application.Features.UserOperationClaims.Rules
             _operationClaimRepository = operationClaimRepository;
         }
 
-        public async Task<OperationClaim> FindUserOperationClaimByClaimId(int claimId)
-        {
-            OperationClaim? result = await _operationClaimRepository.GetAsync(p => p.Id == claimId);
-
-            if (result == null) throw new BusinessException("Operation Claim does not exists.");
-
-            return result;
-        }
+   
 
         public async Task<UserOperationClaim> FindUserOperationClaimById(int Id)
         {
@@ -38,11 +31,19 @@ namespace Application.Features.UserOperationClaims.Rules
             return result;
         }
 
-        public async Task CheckIfUserHasAlreadyRole(int userId, int id)
+        public async Task<UserOperationClaim> CheckUserOperationClaimAlreadyCreated(int Id)
         {
-            UserOperationClaim result = await _userClaimRepository.GetAsync(p => p.Id == id);
+            UserOperationClaim result = await _userClaimRepository.GetAsync(p => p.Id == Id);
 
-            if (result.UserId == userId) throw new BusinessException("User already has this role.");
+            if (result != null) throw new BusinessException("User Operation Claim already exists.");
+
+            return result;
+        }
+
+        public async Task CheckIfUserHasAlreadyRole(UserOperationClaim claim, int requestClaimId)
+        {
+        
+            if (claim.Id == requestClaimId) throw new BusinessException("User already has this role.");
    
         }
     }

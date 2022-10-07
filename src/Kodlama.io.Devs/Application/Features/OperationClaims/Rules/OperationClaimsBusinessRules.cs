@@ -32,7 +32,7 @@ namespace Application.Features.OperationClaims.Rules
         {
             OperationClaim result = await _operationClaimRepository.GetAsync(p => p.Id == Id);
 
-            if (result == null) throw new BusinessException("Operation Claim does not exists with this Id.");
+            if (result == null) throw new BusinessException("Operation Claim does not exists");
 
             return result;
         }

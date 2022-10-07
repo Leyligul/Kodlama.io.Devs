@@ -24,6 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -32,13 +33,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
             ValidIssuer = tokenOptions.Issuer,
             ValidAudience = tokenOptions.Audience,
-
+            ValidateIssuerSigningKey = true,
             IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
         };
-
     });
 
 builder.Services.AddSwaggerGen(opt =>
@@ -62,6 +61,7 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -74,6 +74,7 @@ if (app.Environment.IsDevelopment())
 //if (app.Environment.IsProduction())
 app.ConfigureCustomExceptionMiddleware();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
