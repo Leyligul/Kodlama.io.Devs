@@ -51,18 +51,10 @@ namespace Application.Features.UserOperationClaims.Commands
                 User user = await _userRules.FindUserById(request.UserId);
                 OperationClaim claim = await _operationClaimRules.FindOperationClaimById(request.Id);
 
-                UserOperationClaim userOperationClaim = new()
-                {
-                    Id = userClaim.Id,
-                    UserId = request.UserId,
-                    OperationClaimId = request.OperationClaimId,
-                    User = user,
-                    OperationClaim = claim,
-                    
-               };
-
-                
-                UserOperationClaim updatedUserClaim = await _userClaimRepository.UpdateAsync(userOperationClaim);
+                userClaim.OperationClaimId = request.OperationClaimId;
+                userClaim.UserId = request.UserId;
+  
+                UserOperationClaim updatedUserClaim = await _userClaimRepository.UpdateAsync(userClaim);
                 UpdatedUserOperationClaimDto updatedUserClaimDto = _mapper.Map<UpdatedUserOperationClaimDto>(updatedUserClaim);
 
 

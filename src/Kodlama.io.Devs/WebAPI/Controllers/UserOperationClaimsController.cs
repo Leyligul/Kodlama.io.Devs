@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut("update/{Id}")]
-        public async Task<IActionResult> Update([FromRoute] int Id, [FromRoute] int UserId, [FromRoute] int ClaimId)
+        public async Task<IActionResult> Update([FromRoute] int Id, int UserId, int ClaimId)
         {
             UpdateUserOperationClaimCommand updateUserOperationClaimCommand = new() { Id = Id, UserId = UserId, OperationClaimId = ClaimId };
             UpdatedUserOperationClaimDto result = await Mediator.Send(updateUserOperationClaimCommand);
