@@ -43,7 +43,7 @@ namespace Application.Features.UserOperationClaims.Rules
         public async Task CheckIfUserHasAlreadyRole(UserOperationClaim claim, int requestClaimId)
         {
         
-            if (claim.Id == requestClaimId) throw new BusinessException("User already has this role.");
+            if (claim.OperationClaimId == requestClaimId) throw new BusinessException("User already has this role.");
    
         }
     }

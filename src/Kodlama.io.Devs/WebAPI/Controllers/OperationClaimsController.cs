@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
 
 
         [HttpPost("create")]
-        [Authorize] 
+       // [Authorize] 
         public async Task<IActionResult> Add([FromBody] CreateOperationClaimCommand createOperationClaimCommand)
         {
             CreatedOperationClaimDto result = await Mediator.Send(createOperationClaimCommand);
