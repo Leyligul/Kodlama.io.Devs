@@ -6,11 +6,13 @@ using Application.Features.Users.Rules;
 using Application.Features.Websites.Rules;
 using Application.Services.AuthServıce;
 using Application.Services.Repositories;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.Application.Pipelines.Validation;
 using Core.Security.JWT;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,7 @@ namespace Application
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddScoped<ProgrammingLanguageBusinessRules>();
             services.AddScoped<UserBusinessRules>();
@@ -39,8 +42,11 @@ namespace Application
 
             services.AddScoped<IAuthService, AuthManager>();
 
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+          
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
 
             return services;
 
