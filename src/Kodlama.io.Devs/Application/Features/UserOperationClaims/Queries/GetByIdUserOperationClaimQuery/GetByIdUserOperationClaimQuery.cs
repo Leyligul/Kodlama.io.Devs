@@ -26,15 +26,11 @@ namespace Application.Features.UserOperationClaims.Queries.GetByIdUserOperationC
         {
             private readonly IMapper _mapper;
             private readonly UserOperationClaimBusinessRules _rules;
-            private readonly UserBusinessRules _userRules;
-            private readonly OperationClaimBusinessRules _operationRules;
-
             public GetByIdUserOperationClaimQuerHandler(IMapper mapper, IUserOperationClaimRepository repository, UserOperationClaimBusinessRules rules, OperationClaimBusinessRules operationRules, UserBusinessRules userRules)
             {
                 _mapper = mapper;
                 _rules = rules;
-                _operationRules = operationRules;
-                _userRules = userRules;
+        
             }
 
             public async Task<UserOperationClaimGetByIdDto> Handle(GetByIdUserOperationClaimQuery request, CancellationToken cancellation)
@@ -42,12 +38,6 @@ namespace Application.Features.UserOperationClaims.Queries.GetByIdUserOperationC
 
                 UserOperationClaim userClaim = await _rules.FindUserOperationClaimById(request.Id);
 
-                //User user = await _userRules.FindUserById(userClaim.UserId);
-                //OperationClaim claim = await _operationRules.FindOperationClaimById(request.Id);
-
-                //userClaim.OperationClaim = claim;
-                //userClaim.User = user;
- 
                 UserOperationClaimGetByIdDto userClaimGetByIdDto = _mapper.Map<UserOperationClaimGetByIdDto>(userClaim);
 
                 return userClaimGetByIdDto;
