@@ -20,7 +20,8 @@ namespace Application.Features.OperationClaims.Commands
     {
         public string Name { get; set; }
 
-        public string[] Roles => new[]  { "Admin"};
+        public string[] Roles => new[] { "Admin" };
+
 
         public class CreateOperationClaimCommandHandler : IRequestHandler<CreateOperationClaimCommand, CreatedOperationClaimDto>
         {
@@ -51,3 +52,11 @@ namespace Application.Features.OperationClaims.Commands
         }
     }
 }
+
+
+
+//{
+//    "email": "jan@k.com",
+//  "password": "123",
+//  "authenticatorCode": "string"
+//}
